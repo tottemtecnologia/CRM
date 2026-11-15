@@ -127,7 +127,7 @@
                         <i data-lucide="user-plus" class="w-5 h-5"></i> Cadastro Completo
                     </button>
                     <button onclick="mudarTela('clientes')" id="nav-clientes" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/40 transition">
-                        <i data-lucide="building-2" class="w-5 h-5"></i> Clientes Convertidos <span id="badgeClientes" class="ml-auto bg-slate-800 text-xs px-2 py-0.5 rounded-full text-slate-300">0</span>
+                        <i data-lucide="building-2" class="w-5 h-5"></i> Clientes / Relatórios <span id="badgeClientes" class="ml-auto bg-slate-800 text-xs px-2 py-0.5 rounded-full text-slate-300">0</span>
                     </button>
                 </nav>
             </div>
@@ -164,42 +164,59 @@
 
                 <!-- TELA 0: DASHBOARD -->
                 <div id="tela-dashboard" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-6 shadow-xl">
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total de Leads</span>
-                                <div class="bg-blue-500/10 text-blue-400 p-3 rounded-xl"><i data-lucide="users" class="w-5 h-5"></i></div>
+                    <!-- 5 Cards de Indicadores -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-5 shadow-xl">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Leads Capturados</span>
+                                <div class="bg-blue-500/10 text-blue-400 p-2.5 rounded-xl"><i data-lucide="users" class="w-4 h-4"></i></div>
                             </div>
-                            <div class="text-3xl font-bold text-white" id="statLeads">0</div>
-                            <p class="text-xs text-slate-400 mt-2">Capturados via Proxy</p>
+                            <div class="text-2xl font-bold text-white" id="statLeads">0</div>
+                            <p class="text-[11px] text-slate-400 mt-1">Aguardando cadastro</p>
                         </div>
-                        <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-6 shadow-xl">
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Clientes Convertidos</span>
-                                <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-xl"><i data-lucide="building-2" class="w-5 h-5"></i></div>
+
+                        <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-5 shadow-xl">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Em Teste (7 Dias)</span>
+                                <div class="bg-amber-500/10 text-amber-400 p-2.5 rounded-xl"><i data-lucide="clock" class="w-4 h-4"></i></div>
                             </div>
-                            <div class="text-3xl font-bold text-white" id="statClientes">0</div>
-                            <p class="text-xs text-slate-400 mt-2">Salvos na tabela 'pessoas'</p>
+                            <div class="text-2xl font-bold text-white" id="statEmTeste">0</div>
+                            <p class="text-[11px] text-slate-400 mt-1">Dentro do prazo grátis</p>
                         </div>
-                        <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-6 shadow-xl">
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cupom FLAVIA10</span>
-                                <div class="bg-purple-500/10 text-purple-400 p-3 rounded-xl"><i data-lucide="tag" class="w-5 h-5"></i></div>
+
+                        <div onclick="filtrarPorStatusRapido('vencido')" class="cursor-pointer bg-cardBg border border-rose-500/40 hover:border-rose-500 rounded-2xl p-5 shadow-xl transition">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-rose-400">Testes Vencidos</span>
+                                <div class="bg-rose-500/15 text-rose-400 p-2.5 rounded-xl"><i data-lucide="alert-triangle" class="w-4 h-4"></i></div>
                             </div>
-                            <div class="text-3xl font-bold text-white" id="statFlavia">0</div>
-                            <p class="text-xs text-slate-400 mt-2">Leads atribuídos</p>
+                            <div class="text-2xl font-bold text-rose-400" id="statVencidos">0</div>
+                            <p class="text-[11px] text-slate-400 mt-1">Passaram de 7 dias (Clique p/ ver)</p>
                         </div>
-                        <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-6 shadow-xl">
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cupom RODRIGUES</span>
-                                <div class="bg-amber-500/10 text-amber-400 p-3 rounded-xl"><i data-lucide="tag" class="w-5 h-5"></i></div>
+
+                        <div onclick="filtrarPorStatusRapido('convertido')" class="cursor-pointer bg-cardBg border border-emerald-500/40 hover:border-emerald-500 rounded-2xl p-5 shadow-xl transition">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400">Vendas Convertidas</span>
+                                <div class="bg-emerald-500/15 text-emerald-400 p-2.5 rounded-xl"><i data-lucide="badge-check" class="w-4 h-4"></i></div>
                             </div>
-                            <div class="text-3xl font-bold text-white" id="statRodrigues">0</div>
-                            <p class="text-xs text-slate-400 mt-2">Leads atribuídos</p>
+                            <div class="text-2xl font-bold text-emerald-400" id="statConvertidos">0</div>
+                            <p class="text-[11px] text-slate-400 mt-1">Clientes que compraram</p>
+                        </div>
+
+                        <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-5 shadow-xl">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Cupons Ativos</span>
+                                <div class="bg-purple-500/10 text-purple-400 p-2.5 rounded-xl"><i data-lucide="tag" class="w-4 h-4"></i></div>
+                            </div>
+                            <div class="text-sm font-semibold text-white mt-1">
+                                FLAVIA10: <span id="statFlavia" class="text-purple-400">0</span>
+                            </div>
+                            <div class="text-sm font-semibold text-white mt-0.5">
+                                RODRIGUES: <span id="statRodrigues" class="text-amber-400">0</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
                         <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-6 shadow-xl">
                             <h3 class="font-bold text-white text-base mb-4 flex items-center gap-2"><i data-lucide="activity" class="text-accentBlue"></i> Últimos Leads Capturados</h3>
                             <div class="overflow-x-auto">
@@ -219,18 +236,18 @@
                         </div>
 
                         <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-6 shadow-xl">
-                            <h3 class="font-bold text-white text-base mb-4 flex items-center gap-2"><i data-lucide="check-circle" class="text-emerald-400"></i> Últimos Clientes Convertidos</h3>
+                            <h3 class="font-bold text-white text-base mb-4 flex items-center gap-2"><i data-lucide="alert-circle" class="text-rose-400"></i> Clientes com Teste Vencido (+7 dias)</h3>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left text-sm">
                                     <thead class="bg-slate-900/50 text-slate-400 border-b border-slate-800">
                                         <tr>
                                             <th class="p-3">Razão Social</th>
-                                            <th class="p-3">CNPJ</th>
-                                            <th class="p-3">Cupom</th>
+                                            <th class="p-3">Dias</th>
+                                            <th class="p-3 text-right">Ação</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tabelaDashboardClientes" class="divide-y divide-slate-800/60 text-slate-300">
-                                        <tr><td colspan="3" class="p-4 text-center text-slate-500">Nenhum cliente cadastrado.</td></tr>
+                                    <tbody id="tabelaDashboardVencidos" class="divide-y divide-slate-800/60 text-slate-300">
+                                        <tr><td colspan="3" class="p-4 text-center text-slate-500">Nenhum teste vencido.</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -274,8 +291,8 @@
                     <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-8 shadow-xl max-w-4xl mx-auto">
                         <div class="flex items-center justify-between mb-6 border-b border-slate-800 pb-4">
                             <div>
-                                <h3 class="text-lg font-bold text-white">Completar Cadastro de Cliente</h3>
-                                <p class="text-xs text-slate-400">Consulte o CNPJ e preencha os dados corporativos para enviar à tabela 'pessoas'.</p>
+                                <h3 class="text-lg font-bold text-white">Liberar Teste Grátis (7 Dias)</h3>
+                                <p class="text-xs text-slate-400">Consulte o CNPJ e preencha os dados corporativos para iniciar os 7 dias de teste.</p>
                             </div>
                             <button onclick="limparFormularioCadastro()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition">Limpar Formulário</button>
                         </div>
@@ -354,22 +371,36 @@
 
                             <div class="pt-4 flex justify-end">
                                 <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-xl font-bold text-sm transition shadow-lg shadow-emerald-600/20 flex items-center gap-2">
-                                    <i data-lucide="save" class="w-5 h-5"></i> Salvar na Tabela 'pessoas'
+                                    <i data-lucide="save" class="w-5 h-5"></i> Iniciar 7 Dias de Teste
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <!-- TELA 3: CLIENTES CADASTRADOS -->
+                <!-- TELA 3: CLIENTES & RELATÓRIOS -->
                 <div id="tela-clientes" class="space-y-6 hidden">
                     <div class="bg-cardBg border border-slate-800/80 rounded-2xl p-6 shadow-xl">
                         <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-                            <div class="relative w-full md:w-96">
-                                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
-                                <input type="text" id="filtroClientes" onkeyup="filtrarClientes()" placeholder="Filtrar por Razão Social ou CNPJ..." class="w-full bg-slate-900 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-accentBlue">
+                            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                                <div class="relative w-full md:w-72">
+                                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+                                    <input type="text" id="filtroClientes" onkeyup="filtrarClientes()" placeholder="Razão Social ou CNPJ..." class="w-full bg-slate-900 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-accentBlue">
+                                </div>
+                                <!-- Filtro de Relatório por Status -->
+                                <select id="filtroStatusCliente" onchange="filtrarClientes()" class="bg-slate-900 border border-slate-700/80 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-accentBlue">
+                                    <option value="todos">Todos os Status</option>
+                                    <option value="em_teste">Em Teste (Dentro dos 7 dias)</option>
+                                    <option value="vencido">Testes Vencidos (+7 dias)</option>
+                                    <option value="convertido">Convertidos (Comprou)</option>
+                                </select>
                             </div>
-                            <span class="text-xs text-slate-400" id="contadorClientes">Mostrando 0 clientes</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs text-slate-400" id="contadorClientes">Mostrando 0 registros</span>
+                                <button onclick="exportarRelatorioCSV()" class="bg-slate-800 hover:bg-slate-700 text-white px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
+                                    <i data-lucide="download" class="w-4 h-4"></i> Exportar Relatório
+                                </button>
+                            </div>
                         </div>
 
                         <div class="overflow-x-auto">
@@ -377,11 +408,11 @@
                                 <thead class="bg-slate-900/60 text-slate-400 border-b border-slate-800 text-xs uppercase tracking-wider">
                                     <tr>
                                         <th class="p-4">Razão Social</th>
-                                        <th class="p-4">CNPJ</th>
-                                        <th class="p-4">E-mail / Telefone</th>
-                                        <th class="p-4">Cidade/UF</th>
+                                        <th class="p-4">CNPJ / Contato</th>
                                         <th class="p-4">Cupom</th>
-                                        <th class="p-4 text-right">Data</th>
+                                        <th class="p-4">Data Cadastro</th>
+                                        <th class="p-4">Status / Prazo</th>
+                                        <th class="p-4 text-right">Ação</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tabelaClientesCompleta" class="divide-y divide-slate-800/60 text-slate-300">
@@ -407,6 +438,7 @@
         let supabaseClient = null;
         let cacheLeads = [];
         let cacheClientes = [];
+        let listaFiltradaAtual = [];
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
@@ -433,14 +465,9 @@
         }
 
         function copiarTexto(texto) {
-            if (!texto) {
-                mostrarToast('Nada para copiar.', 'error');
-                return;
-            }
+            if (!texto) return;
             navigator.clipboard.writeText(texto).then(() => {
                 mostrarToast(`Copiado: ${texto}`);
-            }).catch(() => {
-                mostrarToast('Erro ao copiar.', 'error');
             });
         }
 
@@ -499,15 +526,10 @@
 
         async function fazerLogin(e) {
             e.preventDefault();
-            if (!supabaseClient) {
-                mostrarToast('Supabase não conectado.', 'error');
-                return;
-            }
+            if (!supabaseClient) return;
 
             const email = document.getElementById('loginEmail').value.trim();
             const senha = document.getElementById('loginSenha').value.trim();
-
-            mostrarToast('Verificando credenciais...');
 
             const { data, error } = await supabaseClient
                 .from('usuarios_admin')
@@ -546,16 +568,39 @@
             const titulos = {
                 dashboard: 'Dashboard Geral',
                 leads: 'Leads Capturados (Tabela clientes)',
-                cadastro: 'Cadastro Completo de Clientes',
-                clientes: 'Clientes Convertidos (Tabela pessoas)'
+                cadastro: 'Cadastro Completo (7 Dias Grátis)',
+                clientes: 'Clientes & Relatórios de Conversão'
             };
             document.getElementById('tituloTela').innerText = titulos[nomeTela];
             lucide.createIcons();
         }
 
+        function filtrarPorStatusRapido(status) {
+            mudarTela('clientes');
+            document.getElementById('filtroStatusCliente').value = status;
+            filtrarClientes();
+        }
+
+        // Calcula os dias corridos desde o cadastro e define o status real
+        function calcularSituacaoCliente(cliente) {
+            if (cliente.status_venda === 'convertido') {
+                return { situacao: 'convertido', dias: 0 };
+            }
+            const dataCadastro = new Date(cliente.criado_em);
+            const hoje = new Date();
+            const diffTempo = Math.abs(hoje - dataCadastro);
+            const diffDias = Math.floor(diffTempo / (1000 * 60 * 60 * 24));
+
+            if (diffDias > 7) {
+                return { situacao: 'vencido', dias: diffDias };
+            }
+            return { situacao: 'em_teste', dias: diffDias };
+        }
+
         async function carregarDados() {
             if (!supabaseClient) return;
 
+            // 1. Carregar Leads
             const { data: leads, error: errLeads } = await supabaseClient
                 .from('clientes')
                 .select('*')
@@ -575,18 +620,45 @@
                 renderizarDashboardLeads(cacheLeads.slice(0, 5));
             }
 
+            // 2. Carregar Clientes ('pessoas')
             const { data: pessoas, error: errPessoas } = await supabaseClient
                 .from('pessoas')
                 .select('*')
                 .order('criado_em', { ascending: false });
 
             if (!errPessoas) {
-                cacheClientes = pessoas || [];
-                document.getElementById('badgeClientes').innerText = cacheClientes.length;
-                document.getElementById('statClientes').innerText = cacheClientes.length;
+                cacheClientes = (pessoas || []).map(p => {
+                    const info = calcularSituacaoCliente(p);
+                    return { ...p, _situacao: info.situacao, _dias: info.dias };
+                });
 
-                renderizarTabelaClientes(cacheClientes);
-                renderizarDashboardClientes(cacheClientes.slice(0, 5));
+                const totalEmTeste = cacheClientes.filter(c => c._situacao === 'em_teste').length;
+                const listaVencidos = cacheClientes.filter(c => c._situacao === 'vencido');
+                const totalConvertidos = cacheClientes.filter(c => c._situacao === 'convertido').length;
+
+                document.getElementById('badgeClientes').innerText = cacheClientes.length;
+                document.getElementById('statEmTeste').innerText = totalEmTeste;
+                document.getElementById('statVencidos').innerText = listaVencidos.length;
+                document.getElementById('statConvertidos').innerText = totalConvertidos;
+
+                filtrarClientes();
+                renderizarDashboardVencidos(listaVencidos.slice(0, 5));
+            }
+        }
+
+        async function marcarComoConvertido(idCliente, razaoSocial) {
+            if (!supabaseClient) return;
+
+            const { error } = await supabaseClient
+                .from('pessoas')
+                .update({ status_venda: 'convertido' })
+                .eq('id', idCliente);
+
+            if (error) {
+                mostrarToast('Erro ao atualizar status: ' + error.message, 'error');
+            } else {
+                mostrarToast(`Venda confirmada para ${razaoSocial}!`);
+                carregarDados();
             }
         }
 
@@ -600,7 +672,7 @@
                 <tr class="hover:bg-slate-800/30">
                     <td class="p-3 font-mono text-xs flex items-center gap-2">
                         <span>${l.cnpj || '-'}</span>
-                        ${l.cnpj ? `<button onclick="copiarTexto('${l.cnpj}')" class="text-slate-500 hover:text-white" title="Copiar CNPJ"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>` : ''}
+                        ${l.cnpj ? `<button onclick="copiarTexto('${l.cnpj}')" class="text-slate-500 hover:text-white"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>` : ''}
                     </td>
                     <td class="p-3">${l.email || '-'}</td>
                     <td class="p-3"><span class="bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full text-xs font-semibold">${l.cupom || 'FLAVIA10'}</span></td>
@@ -609,17 +681,21 @@
             lucide.createIcons();
         }
 
-        function renderizarDashboardClientes(lista) {
-            const tbody = document.getElementById('tabelaDashboardClientes');
+        function renderizarDashboardVencidos(lista) {
+            const tbody = document.getElementById('tabelaDashboardVencidos');
             if (lista.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500">Nenhum cliente cadastrado.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500">Nenhum cliente com teste vencido.</td></tr>`;
                 return;
             }
             tbody.innerHTML = lista.map(c => `
                 <tr class="hover:bg-slate-800/30">
                     <td class="p-3 font-medium text-white">${c.razao_social || '-'}</td>
-                    <td class="p-3 font-mono text-xs">${c.cnpj || '-'}</td>
-                    <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full text-xs font-semibold">${c.cupom || '-'}</span></td>
+                    <td class="p-3"><span class="bg-rose-500/15 text-rose-400 px-2.5 py-1 rounded-full text-xs font-semibold">${c._dias} dias</span></td>
+                    <td class="p-3 text-right">
+                        <button onclick="marcarComoConvertido('${c.id}', '${c.razao_social}')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1 rounded-lg text-xs font-semibold transition">
+                            Marcar Compra
+                        </button>
+                    </td>
                 </tr>
             `).join('');
             lucide.createIcons();
@@ -637,14 +713,14 @@
                     <td class="p-4 text-xs text-slate-400">${new Date(l.criado_em).toLocaleString('pt-BR')}</td>
                     <td class="p-4 font-mono text-xs font-medium text-white flex items-center gap-2">
                         <span>${l.cnpj || '-'}</span>
-                        ${l.cnpj ? `<button onclick="copiarTexto('${l.cnpj}')" class="text-slate-500 hover:text-white" title="Copiar CNPJ"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>` : ''}
+                        ${l.cnpj ? `<button onclick="copiarTexto('${l.cnpj}')" class="text-slate-500 hover:text-white"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>` : ''}
                     </td>
                     <td class="p-4">${l.email || '-'}</td>
                     <td class="p-4">${l.telefone || '-'}</td>
                     <td class="p-4"><span class="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full text-xs font-semibold">${l.cupom || 'FLAVIA10'}</span></td>
                     <td class="p-4 text-right">
                         <button onclick='converterLeadParaCadastro(${JSON.stringify(l)})' class="bg-accentBlue hover:bg-blue-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition shadow-md shadow-blue-500/20 flex items-center gap-1.5 ml-auto">
-                            <i data-lucide="arrow-right-circle" class="w-3.5 h-3.5"></i> Converter
+                            <i data-lucide="arrow-right-circle" class="w-3.5 h-3.5"></i> Liberar Teste
                         </button>
                     </td>
                 </tr>
@@ -653,25 +729,42 @@
         }
 
         function renderizarTabelaClientes(lista) {
+            listaFiltradaAtual = lista;
             const tbody = document.getElementById('tabelaClientesCompleta');
-            document.getElementById('contadorClientes').innerText = `Mostrando ${lista.length} clientes`;
+            document.getElementById('contadorClientes').innerText = `Mostrando ${lista.length} registros`;
             if (lista.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500">Nenhum cliente cadastrado.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500">Nenhum registro encontrado.</td></tr>`;
                 return;
             }
-            tbody.innerHTML = lista.map(c => `
+            tbody.innerHTML = lista.map(c => {
+                let badgeStatus = '';
+                let btnAcao = '';
+
+                if (c._situacao === 'convertido') {
+                    badgeStatus = `<span class="bg-emerald-500/15 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 w-fit"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Convertido (Pago)</span>`;
+                    btnAcao = `<span class="text-xs text-slate-500">Venda concluída</span>`;
+                } else if (c._situacao === 'vencido') {
+                    badgeStatus = `<span class="bg-rose-500/15 text-rose-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 w-fit"><i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Vencido (${c._dias} dias)</span>`;
+                    btnAcao = `<button onclick="marcarComoConvertido('${c.id}', '${c.razao_social}')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition shadow-md shadow-emerald-500/20 flex items-center gap-1.5 ml-auto"><i data-lucide="dollar-sign" class="w-3.5 h-3.5"></i> Marcar Compra</button>`;
+                } else {
+                    const diasRestantes = 7 - c._dias;
+                    badgeStatus = `<span class="bg-amber-500/15 text-amber-400 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 w-fit"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Em Teste (Restam ${diasRestantes}d)</span>`;
+                    btnAcao = `<button onclick="marcarComoConvertido('${c.id}', '${c.razao_social}')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition shadow-md shadow-emerald-500/20 flex items-center gap-1.5 ml-auto"><i data-lucide="dollar-sign" class="w-3.5 h-3.5"></i> Marcar Compra</button>`;
+                }
+
+                return `
                 <tr class="hover:bg-slate-800/40 transition">
                     <td class="p-4 font-medium text-white">${c.razao_social || '-'}</td>
-                    <td class="p-4 font-mono text-xs">${c.cnpj || '-'}</td>
                     <td class="p-4 text-xs">
-                        <div class="text-white">${c.email || '-'}</div>
-                        <div class="text-slate-400 mt-0.5">${c.telefone || '-'}</div>
+                        <div class="font-mono text-white">${c.cnpj || '-'}</div>
+                        <div class="text-slate-400 mt-0.5">${c.email || '-'} | ${c.telefone || '-'}</div>
                     </td>
-                    <td class="p-4 text-xs">${c.cidade || '-'}/${c.estado || '-'}</td>
-                    <td class="p-4"><span class="bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold">${c.cupom || '-'}</span></td>
-                    <td class="p-4 text-right text-xs text-slate-400">${new Date(c.criado_em).toLocaleDateString('pt-BR')}</td>
+                    <td class="p-4"><span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full text-xs font-semibold">${c.cupom || '-'}</span></td>
+                    <td class="p-4 text-xs text-slate-400">${new Date(c.criado_em).toLocaleDateString('pt-BR')}</td>
+                    <td class="p-4">${badgeStatus}</td>
+                    <td class="p-4 text-right">${btnAcao}</td>
                 </tr>
-            `).join('');
+            `}).join('');
             lucide.createIcons();
         }
 
@@ -687,11 +780,44 @@
 
         function filtrarClientes() {
             const termo = document.getElementById('filtroClientes').value.toLowerCase();
-            const filtrados = cacheClientes.filter(c => 
-                (c.razao_social && c.razao_social.toLowerCase().includes(termo)) ||
-                (c.cnpj && c.cnpj.toLowerCase().includes(termo))
-            );
+            const statusFiltro = document.getElementById('filtroStatusCliente').value;
+
+            const filtrados = cacheClientes.filter(c => {
+                const matchTexto = (c.razao_social && c.razao_social.toLowerCase().includes(termo)) ||
+                                   (c.cnpj && c.cnpj.toLowerCase().includes(termo));
+                const matchStatus = statusFiltro === 'todos' || c._situacao === statusFiltro;
+                return matchTexto && matchStatus;
+            });
             renderizarTabelaClientes(filtrados);
+        }
+
+        function exportarRelatorioCSV() {
+            if (listaFiltradaAtual.length === 0) {
+                mostrarToast('Nenhum dado para exportar.', 'error');
+                return;
+            }
+
+            const cabecalho = ['Razao Social', 'CNPJ', 'Email', 'Telefone', 'Cupom', 'Data Cadastro', 'Status', 'Dias Decorridos'];
+            const linhas = listaFiltradaAtual.map(c => [
+                `"${c.razao_social || ''}"`,
+                `"${c.cnpj || ''}"`,
+                `"${c.email || ''}"`,
+                `"${c.telefone || ''}"`,
+                `"${c.cupom || ''}"`,
+                `"${new Date(c.criado_em).toLocaleDateString('pt-BR')}"`,
+                `"${c._situacao.toUpperCase()}"`,
+                c._dias
+            ]);
+
+            const csvContent = "data:text/csv;charset=utf-8," + [cabecalho.join(';'), ...linhas.map(e => e.join(';'))].join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `relatorio_clientes_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            mostrarToast('Relatório exportado com sucesso!');
         }
 
         function converterLeadParaCadastro(lead) {
@@ -702,7 +828,7 @@
             document.getElementById('cad_cupom').value = lead.cupom || 'FLAVIA10';
             document.getElementById('cad_origem_id').value = lead.id || '';
             
-            mostrarToast('Lead selecionado para conversão.');
+            mostrarToast('Lead selecionado para iniciar teste grátis.');
             if (lead.cnpj && lead.cnpj.replace(/\D/g, '').length === 14) {
                 consultarCNPJBrasilAPI();
             }
@@ -762,7 +888,8 @@
                 cidade: document.getElementById('cad_cidade').value.trim(),
                 estado: document.getElementById('cad_estado').value.trim(),
                 cupom: document.getElementById('cad_cupom').value.trim(),
-                origem_cliente_id: document.getElementById('cad_origem_id').value || null
+                origem_cliente_id: document.getElementById('cad_origem_id').value || null,
+                status_venda: 'em_teste'
             };
 
             const { error } = await supabaseClient
@@ -772,7 +899,7 @@
             if (error) {
                 mostrarToast('Erro ao salvar cliente: ' + error.message, 'error');
             } else {
-                mostrarToast('Cliente salvo com sucesso na tabela pessoas!');
+                mostrarToast('Teste grátis de 7 dias iniciado com sucesso!');
                 limparFormularioCadastro();
                 carregarDados();
                 mudarTela('clientes');
