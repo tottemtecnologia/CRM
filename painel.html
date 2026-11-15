@@ -94,10 +94,10 @@
 
     <!-- MODAL DE CADASTRO DE NOVO ADMIN -->
     <div id="adminModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden">
-        <div class="bg-cardBg border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+        <div class="bg-cardBg border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i data-lucide="user-plus" class="text-accentBlue"></i> Novo Administrador
+                    <i data-lucide="user-plus" class="text-accentBlue"></i> Gerenciar Administradores & Telegram
                 </h2>
                 <button onclick="fecharAdminModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
@@ -112,13 +112,30 @@
                     <input type="email" id="novoAdminEmail" required placeholder="novo@tottem.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accentBlue">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Senha Provisória</label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Senha</label>
                     <input type="password" id="novoAdminSenha" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accentBlue">
                 </div>
+
+                <div class="border-t border-slate-800 pt-3">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-accentBlue mb-1">Configuração do Telegram (Notificações)</label>
+                    <p class="text-[11px] text-slate-400 mb-2">Insira o Token do Bot e o(s) Chat ID(s) separados por vírgula para receber os leads.</p>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[11px] text-slate-400 mb-1">Telegram Bot Token</label>
+                            <input type="text" id="novoAdminBotToken" placeholder="Ex: 5506066114:AAHKLRP..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-accentBlue font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-400 mb-1">Chat ID(s) (Separe múltiplos por vírgula)</label>
+                            <input type="text" id="novoAdminChatId" placeholder="Ex: 5506066114, 987654321" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-accentBlue font-mono">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="pt-2 flex justify-end gap-3">
                     <button type="button" onclick="fecharAdminModal()" class="bg-slate-800 hover:bg-slate-700 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 transition">Cancelar</button>
                     <button type="submit" class="bg-accentBlue hover:bg-blue-600 px-5 py-2.5 rounded-xl text-xs font-semibold text-white transition shadow-lg shadow-blue-500/20 flex items-center gap-1.5">
-                        <i data-lucide="check" class="w-4 h-4"></i> Cadastrar Admin
+                        <i data-lucide="check" class="w-4 h-4"></i> Salvar Administrador
                     </button>
                 </div>
             </form>
@@ -586,15 +603,17 @@
             const nome = document.getElementById('novoAdminNome').value.trim();
             const email = document.getElementById('novoAdminEmail').value.trim();
             const senha = document.getElementById('novoAdminSenha').value.trim();
+            const telegram_bot_token = document.getElementById('novoAdminBotToken').value.trim();
+            const telegram_chat_id = document.getElementById('novoAdminChatId').value.trim();
 
             const { error } = await supabaseClient
                 .from('usuarios_admin')
-                .insert([{ nome, email, senha }]);
+                .insert([{ nome, email, senha, telegram_bot_token, telegram_chat_id }]);
 
             if (error) {
                 mostrarToast('Erro ao cadastrar admin: ' + error.message, 'error');
             } else {
-                mostrarToast('Administrador cadastrado com sucesso!');
+                mostrarToast('Administrador e configurações do Telegram salvos com sucesso!');
                 fecharAdminModal();
             }
         }
