@@ -92,53 +92,70 @@
         </div>
     </div>
 
-    <!-- MODAL DE CADASTRO DE NOVO ADMIN -->
+    <!-- MODAL DE CADASTRO / EDIÇÃO DE ADMINS -->
     <div id="adminModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden">
-        <div class="bg-cardBg border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div class="bg-cardBg border border-slate-800 rounded-2xl w-full max-w-xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
-                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <h2 id="adminModalTitulo" class="text-lg font-bold text-white flex items-center gap-2">
                     <i data-lucide="user-plus" class="text-accentBlue"></i> Gerenciar Administradores & Telegram
                 </h2>
                 <button onclick="fecharAdminModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             
-            <form onsubmit="cadastrarNovoAdmin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Nome Completo</label>
-                    <input type="text" id="novoAdminNome" required placeholder="Ex: Flávia Rodrigues" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accentBlue">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">E-mail de Acesso</label>
-                    <input type="email" id="novoAdminEmail" required placeholder="novo@tottem.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accentBlue">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Senha</label>
-                    <input type="password" id="novoAdminSenha" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accentBlue">
-                </div>
-
-                <div class="border-t border-slate-800 pt-3">
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-accentBlue mb-1">Configuração do Telegram (Notificações)</label>
-                    <p class="text-[11px] text-slate-400 mb-2">Insira o Token do Bot e o(s) Chat ID(s) separados por vírgula para receber os leads.</p>
-                    
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-[11px] text-slate-400 mb-1">Telegram Bot Token</label>
-                            <input type="text" id="novoAdminBotToken" placeholder="Ex: 5506066114:AAHKLRP..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-accentBlue font-mono">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] text-slate-400 mb-1">Chat ID(s) (Separe múltiplos por vírgula)</label>
-                            <input type="text" id="novoAdminChatId" placeholder="Ex: 5506066114, 987654321" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-accentBlue font-mono">
-                        </div>
+            <!-- Formulário de Cadastro / Edição -->
+            <form onsubmit="salvarAdmin(event)" class="space-y-4 mb-6 bg-slate-900/50 p-4 rounded-xl border border-slate-800">
+                <input type="hidden" id="editAdminId">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Nome Completo</label>
+                        <input type="text" id="novoAdminNome" required placeholder="Ex: Flávia Rodrigues" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-accentBlue">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">E-mail de Acesso</label>
+                        <input type="email" id="novoAdminEmail" required placeholder="novo@tottem.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-accentBlue">
                     </div>
                 </div>
 
-                <div class="pt-2 flex justify-end gap-3">
-                    <button type="button" onclick="fecharAdminModal()" class="bg-slate-800 hover:bg-slate-700 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 transition">Cancelar</button>
-                    <button type="submit" class="bg-accentBlue hover:bg-blue-600 px-5 py-2.5 rounded-xl text-xs font-semibold text-white transition shadow-lg shadow-blue-500/20 flex items-center gap-1.5">
-                        <i data-lucide="check" class="w-4 h-4"></i> Salvar Administrador
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Senha</label>
+                        <input type="password" id="novoAdminSenha" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-accentBlue">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Telegram Bot Token</label>
+                        <input type="text" id="novoAdminBotToken" placeholder="Ex: 5506066114:AAHKLRP..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-accentBlue font-mono">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Chat ID(s) (Separe múltiplos por vírgula)</label>
+                    <input type="text" id="novoAdminChatId" placeholder="Ex: 5506066114, 987654321" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-accentBlue font-mono">
+                </div>
+
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" id="btnCancelarEdicao" onclick="limparFormAdmin()" class="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 transition hidden">Cancelar Edição</button>
+                    <button type="submit" id="btnSalvarAdmin" class="bg-accentBlue hover:bg-blue-600 px-5 py-2 rounded-xl text-xs font-semibold text-white transition shadow-lg shadow-blue-500/20 flex items-center gap-1.5">
+                        <i data-lucide="check" class="w-4 h-4"></i> Cadastrar Administrador
                     </button>
                 </div>
             </form>
+
+            <!-- Lista de Admins Existentes -->
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Administradores Cadastrados</h3>
+            <div class="overflow-x-auto max-h-48 overflow-y-auto border border-slate-800 rounded-xl">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-900 text-slate-400 sticky top-0">
+                        <tr>
+                            <th class="p-3">Nome / E-mail</th>
+                            <th class="p-3">Telegram Chats</th>
+                            <th class="p-3 text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaAdminsModal" class="divide-y divide-slate-800 text-slate-300">
+                        <!-- Preenchido via JS -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -584,17 +601,127 @@
             }
         }
 
-        function abrirAdminModal() {
+        async function abrirAdminModal() {
             document.getElementById('adminModal').classList.remove('hidden');
+            limparFormAdmin();
+            await carregarListaAdminsModal();
             lucide.createIcons();
         }
 
         function fecharAdminModal() {
             document.getElementById('adminModal').classList.add('hidden');
+            limparFormAdmin();
+        }
+
+        function limparFormAdmin() {
+            document.getElementById('editAdminId').value = '';
             document.getElementById('novoAdminNome').value = '';
             document.getElementById('novoAdminEmail').value = '';
             document.getElementById('novoAdminSenha').value = '';
+            document.getElementById('novoAdminBotToken').value = '';
+            document.getElementById('novoAdminChatId').value = '';
+            document.getElementById('adminModalTitulo').innerHTML = `<i data-lucide="user-plus" class="text-accentBlue"></i> Gerenciar Administradores & Telegram`;
+            document.getElementById('btnSalvarAdmin').innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Cadastrar Administrador`;
+            document.getElementById('btnCancelarEdicao').classList.add('hidden');
+            lucide.createIcons();
         }
+
+        function prepararEdicaoAdmin(adm) {
+            document.getElementById('editAdminId').value = adm.id;
+            document.getElementById('novoAdminNome').value = adm.nome || '';
+            document.getElementById('novoAdminEmail').value = adm.email || '';
+            document.getElementById('novoAdminSenha').value = adm.senha || '';
+            document.getElementById('novoAdminBotToken').value = adm.telegram_bot_token || '';
+            document.getElementById('novoAdminChatId').value = adm.telegram_chat_id || '';
+            
+            document.getElementById('adminModalTitulo').innerHTML = `<i data-lucide="edit" class="text-accentBlue"></i> Editando Administrador`;
+            document.getElementById('btnSalvarAdmin').innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Atualizar Administrador`;
+            document.getElementById('btnCancelarEdicao').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        async function salvarAdmin(e) {
+            e.preventDefault();
+            if (!supabaseClient) return;
+
+            const id = document.getElementById('editAdminId').value;
+            const dados = {
+                nome: document.getElementById('novoAdminNome').value.trim(),
+                email: document.getElementById('novoAdminEmail').value.trim(),
+                senha: document.getElementById('novoAdminSenha').value.trim(),
+                telegram_bot_token: document.getElementById('novoAdminBotToken').value.trim(),
+                telegram_chat_id: document.getElementById('novoAdminChatId').value.trim()
+            };
+
+            let error = null;
+            if (id) {
+                // Atualizar existente
+                const res = await supabaseClient.from('usuarios_admin').update(dados).eq('id', id);
+                error = res.error;
+            } else {
+                // Inserir novo
+                const res = await supabaseClient.from('usuarios_admin').insert([dados]);
+                error = res.error;
+            }
+
+            if (error) {
+                mostrarToast('Erro ao salvar administrador: ' + error.message, 'error');
+            } else {
+                mostrarToast(id ? 'Administrador atualizado com sucesso!' : 'Administrador cadastrado com sucesso!');
+                limparFormAdmin();
+                await carregarListaAdminsModal();
+            }
+        }
+
+        async function excluirAdmin(id) {
+            if (!confirm('Deseja realmente excluir este administrador?')) return;
+            if (!supabaseClient) return;
+
+            const { error } = await supabaseClient.from('usuarios_admin').delete().eq('id', id);
+            if (error) {
+                mostrarToast('Erro ao excluir: ' + error.message, 'error');
+            } else {
+                mostrarToast('Administrador excluído.');
+                await carregarListaAdminsModal();
+            }
+        }
+
+        async function carregarListaAdminsModal() {
+            if (!supabaseClient) return;
+
+            const { data, error } = await supabaseClient
+                .from('usuarios_admin')
+                .select('*')
+                .order('criado_em', { ascending: false });
+
+            const tbody = document.getElementById('listaAdminsModal');
+            if (error || !data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500">Nenhum administrador cadastrado.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(adm => `
+                <tr class="hover:bg-slate-800/40">
+                    <td class="p-3">
+                        <div class="font-medium text-white">${adm.nome || 'Sem Nome'}</div>
+                        <div class="text-slate-400 text-[11px]">${adm.email}</div>
+                    </td>
+                    <td class="p-3 font-mono text-[11px] text-slate-300">
+                        ${adm.telegram_chat_id ? adm.telegram_chat_id : '<span class="text-slate-500">Não configurado</span>'}
+                    </td>
+                    <td class="p-3 text-right flex justify-end gap-2">
+                        <button onclick='prepararEdicaoAdmin(${JSON.stringify(adm)})' class="bg-slate-800 hover:bg-slate-700 text-blue-400 p-1.5 rounded-lg transition" title="Editar">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button onclick="excluirAdmin('${adm.id}')" class="bg-slate-800 hover:bg-slate-700 text-rose-400 p-1.5 rounded-lg transition" title="Excluir">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            lucide.createIcons();
+        }
+
 
         async function cadastrarNovoAdmin(e) {
             e.preventDefault();
